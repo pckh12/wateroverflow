@@ -1,5 +1,6 @@
 const { should } = require('chai').should();
 const Glass = require('../glass');
+const TriangleStack = require('../triangle-stack')
 
 describe('TriangleStack', () => {
 
@@ -30,7 +31,7 @@ describe('TriangleStack', () => {
     describe('#height', () => {
         it('returns the height of the stack', () => {
             const stack = new TriangleStack(4);
-            stack.rows.should.equal(4);
+            stack.height.should.equal(4);
         });
     });
 
@@ -38,7 +39,7 @@ describe('TriangleStack', () => {
         let stack;
 
         beforeEach(() => {
-            stack = new TriangleStack(3);
+            stack = new TriangleStack(4);
         });
 
         it('requires positive integer arguments', () => {
@@ -69,21 +70,37 @@ describe('TriangleStack', () => {
 
         it('returns null when glass is not found', () => {
             const glass = stack.getGlass(1, 2);
-            should.not.exist(glass);
+            (glass === null).should.be.true;
         });
 
         it('retrieves the correct glass', () => {
             let glass = stack.getGlass(0, 0);
-            glass.row.should.be(0);
-            glass.position.should.be(0);
+            glass.id.should.be.equal('(0,0)')
 
             glass = stack.getGlass(1, 0);
-            glass.row.should.be(1);
-            glass.position.should.be(0);
+            glass.id.should.be.equal('(1,0)')
+
+            glass = stack.getGlass(2, 1);
+            glass.id.should.be.equal('(2,1)')
 
             glass = stack.getGlass(2, 2);
-            glass.row.should.be(2);
-            glass.position.should.be(2);
+            glass.id.should.be.equal('(2,2)')
+
+            glass = stack.getGlass(3, 3);
+            glass.id.should.be.equal('(3,3)')
         });
+
+        it('stacking order is correct', () => {
+            let glass = stack.getGlass(0, 0);
+
+            glass.stackedLeft.id.should.be.equal('(1,0)');
+            glass.stackedLeft.stackedLeft.id.should.be.equal('(2,0)');
+            glass.stackedLeft.stackedRight.id.should.be.equal('(2,1)');
+
+            glass.stackedRight.id.should.be.equal('(1,1)');
+            glass.stackedRight.stackedLeft.id.should.be.equal('(2,1)');
+            glass.stackedRight.stackedRight.id.should.be.equal('(2,2)');
+        });
+
     });
 });

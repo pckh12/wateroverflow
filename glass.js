@@ -1,3 +1,5 @@
+const ValidationUtil = require("./utilities/validation-util");
+
 class Glass {
 
     constructor(spec) {
@@ -53,23 +55,16 @@ class Glass {
     }
 
     _ensureValidSpec(spec) {
-        if (!this._isPositiveInteger(spec.row))
+        if (!ValidationUtil.isPositiveInteger(spec.row))
             throw new Error('row must be a positive integer');
 
-        if (!this._isPositiveInteger(spec.position))
+        if (!ValidationUtil.isPositiveInteger(spec.position))
             throw new Error('position must be a positive integer');
 
-        if (spec.maxCapacity && !this._isPositiveNumber(spec.maxCapacity))
+        if (spec.maxCapacity && !ValidationUtil.isPositiveNumber(spec.maxCapacity))
             throw new Error('position must be a positive number');
     }
 
-    _isPositiveInteger(value) {
-        return (value !== 'undefined' && Number.isInteger(value) && value >= 0);
-    }
-
-    _isPositiveNumber(value) {
-        return (value !== 'undefined' && (typeof value === 'number') && value >= 0);
-    }
 }
 
 module.exports = Glass;
