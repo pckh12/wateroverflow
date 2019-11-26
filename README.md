@@ -1,9 +1,10 @@
 # Water Overflow Challenge
-Water Overflow Coding Challenge
 
-Calculates the amout of water held by each glass when water is poured into the top of a triangle stack of glasses.
+## Summary
 
-Any excess water overflows to the glasses below with even distibution.
+Calculates the amount of water held by each glass when water is poured into the top of a triangle stack of glasses.
+
+Any excess water overflows to the glasses below with even distribution.
 
 ## Assumptions:
 - All glasses have a 250ml capacity
@@ -28,7 +29,7 @@ where
 
 *amount* is the amount of water to pour
 
-*heightOfStack* is the number of rows in the stack. Default is 4
+*heightOfStack* (optional) is the number of rows in the stack. Default is 4
 
 eg.
 ``` bash
@@ -53,7 +54,7 @@ where the results from each glass has the following format:
 *(row, position): amountHeld*
 
 
-## Unit test
+## Unit testss
 The unit tests can be executed using:
 
 ``` bash
