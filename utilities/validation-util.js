@@ -1,3 +1,6 @@
+/**
+ * Validation utility functions
+ */
 const ValidationUtil = {
 
     isPositiveInteger: (value) => {

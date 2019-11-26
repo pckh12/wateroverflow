@@ -1,6 +1,9 @@
 const ValidationUtil = require("./utilities/validation-util");
 const Glass = require("./Glass");
 
+/**
+ * Glasses stacked on top of each other in the triangle shape
+ */
 class TriangleStack {
 
     constructor(height) {
@@ -15,10 +18,19 @@ class TriangleStack {
         this._createStack(height);
     }
 
+    /**
+     * The height of the stack
+     */
     get height() {
         return this._height;
     }
 
+    /**
+     * Retrives the glass at the specified location
+     * 
+     * @param row row index
+     * @param position position index
+     */
     getGlass(row, position) {
         if (!ValidationUtil.isPositiveInteger(row))
             throw new Error('row must be a positive integer');
@@ -36,6 +48,11 @@ class TriangleStack {
         return null;
     }
 
+    /**
+     * Pours water onto the top of the stack
+     * 
+     * @param amount the amount of water to pour
+     */
     pour(amount) {
         if (!ValidationUtil.isPositiveNumber(amount))
             throw new Error('amount must be a positive number');
@@ -45,6 +62,9 @@ class TriangleStack {
             topGlass.receive(amount);
     }
 
+    /**
+     * Outputs the amount of water held by each glass in the stack
+     */
     displayAmounts() {
         console.log(this._stack.map(level => level.map(glass => `${glass.id}: ${glass.amountHeld}`)));
     }
