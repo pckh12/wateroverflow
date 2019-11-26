@@ -96,4 +96,26 @@ describe('Glass', () => {
             glass.availableCapacity.should.equal(glass.maxCapacity);
         });
     });
+
+    describe('#id', () => {
+        it('generates id', () => {
+            const glass = new Glass({ row: 2, position: 1 });
+            glass.id.should.equal(`(${glass.row},${glass.position})`);
+        });
+    });
+
+    describe('#stackedLeft', () => {
+        it('left side is not stacked on top of anything', () => {
+            const glass = new Glass({ row: 2, position: 1 });
+            (glass.stackedLeft === null).should.be.true;
+
+        });
+    });
+
+    describe('#stackedRight', () => {
+        it('right side is not stacked on top of anything', () => {
+            const glass = new Glass({ row: 2, position: 1 });
+            (glass.stackedRight === null).should.be.true;
+        });
+    });
 });
