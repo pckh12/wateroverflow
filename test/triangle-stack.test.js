@@ -103,4 +103,64 @@ describe('TriangleStack', () => {
         });
 
     });
+
+    describe('#pour()', () => {
+        let stack;
+        let topGlass;
+
+        context('pouring less than max capacity', () => {
+
+            before(() => {
+                stack = new TriangleStack(4);
+                topGlass = stack.getGlass(0, 0);
+                const diff = 10;
+                const inflow = topGlass.maxCapacity - diff;
+
+                stack.pour(inflow);
+            });
+
+            it('amount held is less than max capacity', () => {
+                topGlass.amountHeld.should.equal(inflow);
+            });
+
+            it('available capacity is correct', () => {
+                topGlass.availableCapacity.should.equal(diff);
+            });
+
+            it('should not overflow', () => {
+                topGlass.stackedLeft.amountHeld.should.equal(0);
+                topGlass.stackedRight.amountHeld.should.equal(0);
+            });
+        });
+
+        context('pouring overflows to second level', () => {
+
+            before(() => {
+                stack = new TriangleStack(4);
+                topGlass = stack.getGlass(0, 0);
+                const diff = 100;
+                const inflow = topGlass.maxCapacity + diff;
+
+                stack.pour(inflow);
+            });
+
+            it('top glass is full', () => {
+                topGlass.amountHeld.should.equal(topGlass.maxCapacity);
+                topGlass.availableCapacity.should.equal(0);
+            });
+
+            it('water overflows to second level', () => {
+                topGlass.stackedLeft.amountHeld.should.be.above(0);
+                topGlass.stackedRight.amountHeld.should.be.above(0);
+            });
+
+            it('overflow is evenly distributed to second level', () => {
+                const distributedAmount = diff / 2;
+                topGlass.stackedLeft.amountHeld.should.equal(distributedAmount);
+                topGlass.stackedRight.amountHeld.should.equal(distributedAmount);
+                topGlass.stackedLeft.amountHeld.should.equal(topGlass.stackedRight.amountHeld);
+            });
+        });
+    });
+
 });
