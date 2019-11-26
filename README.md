@@ -54,7 +54,7 @@ where the results from each glass has the following format:
 *(row, position): amountHeld*
 
 
-## Unit testss
+## Unit tests
 The unit tests can be executed using:
 
 ``` bash
