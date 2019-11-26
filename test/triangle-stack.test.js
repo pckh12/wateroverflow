@@ -107,14 +107,16 @@ describe('TriangleStack', () => {
     describe('#pour()', () => {
         let stack;
         let topGlass;
+        let inflow;
+        let diff;
 
         context('pouring less than max capacity', () => {
 
             before(() => {
                 stack = new TriangleStack(4);
                 topGlass = stack.getGlass(0, 0);
-                const diff = 10;
-                const inflow = topGlass.maxCapacity - diff;
+                diff = 10;
+                inflow = topGlass.maxCapacity - diff;
 
                 stack.pour(inflow);
             });
@@ -138,8 +140,8 @@ describe('TriangleStack', () => {
             before(() => {
                 stack = new TriangleStack(4);
                 topGlass = stack.getGlass(0, 0);
-                const diff = 100;
-                const inflow = topGlass.maxCapacity + diff;
+                diff = 100.80;
+                inflow = topGlass.maxCapacity + diff;
 
                 stack.pour(inflow);
             });
@@ -159,6 +161,85 @@ describe('TriangleStack', () => {
                 topGlass.stackedLeft.amountHeld.should.equal(distributedAmount);
                 topGlass.stackedRight.amountHeld.should.equal(distributedAmount);
                 topGlass.stackedLeft.amountHeld.should.equal(topGlass.stackedRight.amountHeld);
+            });
+        });
+
+        context('pouring overflows to third level', () => {
+
+            before(() => {
+                stack = new TriangleStack(4);
+                topGlass = stack.getGlass(0, 0);
+                inflow = 1000
+
+                stack.pour(inflow);
+            });
+
+            it('top glass is full', () => {
+                topGlass.amountHeld.should.equal(topGlass.maxCapacity);
+                topGlass.availableCapacity.should.equal(0);
+            });
+
+            it('second level glasses are full', () => {
+                const glass10 = stack.getGlass(1, 0);
+                const glass11 = stack.getGlass(1, 1);
+                glass10.amountHeld.should.equal(glass10.maxCapacity);
+                glass11.amountHeld.should.equal(glass11.maxCapacity);
+            });
+
+            it('overflow reaches third level', () => {
+                const glass20 = stack.getGlass(2, 0);
+                const glass21 = stack.getGlass(2, 1);
+                const glass22 = stack.getGlass(2, 2);
+
+                glass20.amountHeld.should.equal(62.5);
+                glass21.amountHeld.should.equal(125);
+                glass22.amountHeld.should.equal(62.5);
+            });
+        });
+
+        context('pouring overflows to fourth level', () => {
+
+            before(() => {
+                stack = new TriangleStack(4);
+                topGlass = stack.getGlass(0, 0);
+                inflow = 2000
+
+                stack.pour(inflow);
+            });
+
+            it('top glass is full', () => {
+                topGlass.amountHeld.should.equal(topGlass.maxCapacity);
+                topGlass.availableCapacity.should.equal(0);
+            });
+
+            it('second level glasses are full', () => {
+                const glass10 = stack.getGlass(1, 0);
+                const glass11 = stack.getGlass(1, 1);
+                glass10.amountHeld.should.equal(glass10.maxCapacity);
+                glass11.amountHeld.should.equal(glass11.maxCapacity);
+            });
+
+            it('third level glasses are full', () => {
+                const glass20 = stack.getGlass(2, 0);
+                const glass21 = stack.getGlass(2, 1);
+                const glass22 = stack.getGlass(2, 2);
+                glass20.amountHeld.should.equal(glass20.maxCapacity);
+                glass21.amountHeld.should.equal(glass21.maxCapacity);
+                glass22.amountHeld.should.equal(glass22.maxCapacity);
+            });
+
+            it('overflow reaches fourth level', () => {
+                const glass30 = stack.getGlass(3, 0);
+                const glass31 = stack.getGlass(3, 1);
+                const glass32 = stack.getGlass(3, 2);
+                const glass33 = stack.getGlass(3, 3);
+
+                glass30.amountHeld.should.equal(31.25);
+                glass31.amountHeld.should.equal(218.75);
+                glass32.amountHeld.should.equal(218.75);
+                glass33.amountHeld.should.equal(31.25);
+
+                //stack.displayAmounts();
             });
         });
     });

@@ -13,10 +13,6 @@ class TriangleStack {
         this._stack = [...Array(height)].map(x => []);
 
         this._createStack(height);
-
-
-        // this._stack[0].push('abc');
-        // this._stack[1].push('def');
     }
 
     get height() {
@@ -40,9 +36,21 @@ class TriangleStack {
         return null;
     }
 
+    pour(amount) {
+        if (!ValidationUtil.isPositiveNumber(amount))
+            throw new Error('amount must be a positive number');
+
+        const topGlass = this.getGlass(0, 0);
+        if (topGlass)
+            topGlass.receive(amount);
+    }
+
+    displayAmounts() {
+        console.log(this._stack.map(level => level.map(glass => `${glass.id}: ${glass.amountHeld}`)));
+    }
+
     _createStack(height) {
-        const top = this._createGlass(0, 0, height);
-        //this._stack = top;
+        this._createGlass(0, 0, height);
     }
 
     _createGlass(row, position, maxHeight) {
@@ -61,8 +69,6 @@ class TriangleStack {
 
             glass.stackOnTop(left, right);
         }
-
-
 
         return glass;
     }
